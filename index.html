@@ -83,9 +83,15 @@
 		var buildUrl = "Build";
 		var loaderUrl = buildUrl + "/Office-Verse.loader.js";
 		var config = {
+<<<<<<< Updated upstream
 			dataUrl: buildUrl + "/a5945f30320c7da9bda44da1c1f0e435.data",
 			frameworkUrl: buildUrl + "/3969fb2808d1bb565135d1c1aae0934b.js",
 			codeUrl: buildUrl + "/fffd96cefe551fae32edaa9fcd081871.wasm",
+=======
+			dataUrl: buildUrl + "/6a02e38d146b7aa93175f7ef087d9283.data",
+			frameworkUrl: buildUrl + "/a95ad91981f2727dcc57ba7e585f213c.js",
+			codeUrl: buildUrl + "/65690290f873084542d0ff15fcae18c4.wasm",
+>>>>>>> Stashed changes
         streamingAssetsUrl: "StreamingAssets",
 			companyName: "DefaultCompany",
 			productName: "Office Dar Blockchain",
@@ -111,18 +117,63 @@
 		}
 		loadingBar.style.display = "block";
 
-		var script = document.createElement("script");
-		script.src = loaderUrl;
-		script.onload = () => {
-			createUnityInstance(canvas, config, (progress) => {
-				progressBarFull.style.width = 100 * progress + "%";
-			}).then((unityInstance2) => {
-				unityInstance = unityInstance2;
-				loadingBar.style.display = "none";
-			}).catch((message) => {
-				alert(message);
-			});
-		};
+		var adObj = {
+				ad1: "",
+				ad2: "",
+				ad3: ""
+			}
+			var selectedAd = ""
+			async function handleEvent(e) {
+				if (!"http://localhost:5173".includes(e.origin)) { return }
+				unityInstance.SendMessage(selectedAd, 'UpdateAdImage', e.data);
+				console.log(selectedAd, e.data)
+				adObj[selectedAd.toLowerCase()] = e.data
+				const response = await fetch("http://myonlineservices.alwaysdata.net/connectverse", {
+					method: "POST",
+					body: JSON.stringify(adObj)
+				})
+			}
+
+			function handleModalChange(adName) {
+				selectedAd = adName
+			}
+
+			async function getAdImage() {
+				const response = await fetch("http://myonlineservices.alwaysdata.net/connectverse")
+				if (!response.ok) {
+					console.error("Network error saving ad Image")
+				}
+
+				return await response.json()
+			}
+
+			function OnMapLoaded() {
+				getAdImage().then(data => {
+					adObj = data
+					console.log("adObj", data)
+
+					unityInstance.SendMessage("AD1", 'UpdateAdImage', data.ad1);
+					unityInstance.SendMessage("AD2", 'UpdateAdImage', data.ad2);
+					unityInstance.SendMessage("AD3", 'UpdateAdImage', data.ad3);
+
+				})
+			}
+
+			var script = document.createElement("script");
+			script.src = loaderUrl;
+
+			script.onload = () => {
+				window.addEventListener("message", handleEvent, false);
+				createUnityInstance(canvas, config, (progress) => {
+					progressBarFull.style.width = 100 * progress + "%";
+				}).then((unityInstance2) => {
+					unityInstance = unityInstance2;
+					loadingBar.style.display = "none";
+
+				}).catch((message) => {
+					alert(message);
+				});
+			};
 		document.body.appendChild(script);
 	</script>
 </body>
