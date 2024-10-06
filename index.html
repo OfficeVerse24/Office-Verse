@@ -144,8 +144,7 @@
 			function OnMapLoaded() {
 				getAdImage().then(data => {
 					adObj = data
-					console.log("adObj", data)
-
+					
 					unityInstance.SendMessage("AD1", 'UpdateAdImage', data.ad1);
 					unityInstance.SendMessage("AD2", 'UpdateAdImage', data.ad2);
 					unityInstance.SendMessage("AD3", 'UpdateAdImage', data.ad3);
