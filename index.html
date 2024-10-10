@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Office Dar Blockchain</title>
+	<title>Aptosverse</title>
 	<link rel="shortcut icon" href="TemplateData/favicon.ico">
 	<link rel="stylesheet" href="AgoraWebSDK/style.css">
 	<link rel="stylesheet" href="TemplateData/style.css">
@@ -83,7 +83,7 @@
 		var buildUrl = "Build";
 		var loaderUrl = buildUrl + "/Build.loader.js";
 		var config = {
-			dataUrl: buildUrl + "/fc480d7464bf106930145aa90d78e647.data",
+			dataUrl: buildUrl + "/23c91cdf88cfed0cf84501540e366f44.data",
 			frameworkUrl: buildUrl + "/a95ad91981f2727dcc57ba7e585f213c.js",
 			codeUrl: buildUrl + "/7d43cbd5a4f1dd1676c48fc400514051.wasm",
         streamingAssetsUrl: "StreamingAssets",
@@ -111,18 +111,62 @@
 		}
 		loadingBar.style.display = "block";
 
-		var script = document.createElement("script");
-		script.src = loaderUrl;
-		script.onload = () => {
-			createUnityInstance(canvas, config, (progress) => {
-				progressBarFull.style.width = 100 * progress + "%";
-			}).then((unityInstance2) => {
-				unityInstance = unityInstance2;
-				loadingBar.style.display = "none";
-			}).catch((message) => {
-				alert(message);
-			});
-		};
+		var adObj = {
+				ad1: "",
+				ad2: "",
+				ad3: ""
+			}
+			var selectedAd = ""
+			async function handleEvent(e) {
+				if (!"http://localhost:5173".includes(e.origin)) { return }
+				unityInstance.SendMessage(selectedAd, 'UpdateAdImage', e.data);
+				console.log(selectedAd, e.data)
+				adObj[selectedAd.toLowerCase()] = e.data
+				const response = await fetch("https://connectverse-service.vercel.app", {
+					method: "POST",
+					body: JSON.stringify(adObj)
+				})
+			}
+
+			function handleModalChange(adName) {
+				selectedAd = adName
+			}
+
+			async function getAdImage() {
+				const response = await fetch("https://connectverse-service.vercel.app")
+				if (!response.ok) {
+					console.error("Network error saving ad Image")
+				}
+
+				return await response.json()
+			}
+
+			function OnMapLoaded() {
+				getAdImage().then(data => {
+					adObj = data
+
+					unityInstance.SendMessage("AD1", 'UpdateAdImage', data.ad1);
+					unityInstance.SendMessage("AD2", 'UpdateAdImage', data.ad2);
+					unityInstance.SendMessage("AD3", 'UpdateAdImage', data.ad3);
+
+				})
+			}
+
+			var script = document.createElement("script");
+			script.src = loaderUrl;
+
+			script.onload = () => {
+				window.addEventListener("message", handleEvent, false);
+				createUnityInstance(canvas, config, (progress) => {
+					progressBarFull.style.width = 100 * progress + "%";
+				}).then((unityInstance2) => {
+					unityInstance = unityInstance2;
+					loadingBar.style.display = "none";
+
+				}).catch((message) => {
+					alert(message);
+				});
+			};
 		document.body.appendChild(script);
 	</script>
 </body>
