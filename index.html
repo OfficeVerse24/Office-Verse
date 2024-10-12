@@ -118,7 +118,7 @@
 			}
 			var selectedAd = ""
 			async function handleEvent(e) {
-				if (!"http://localhost:5173".includes(e.origin)) { return }
+				if (!"https://aptos-project-nku7.vercel.app/".includes(e.origin)) { return }
 				unityInstance.SendMessage(selectedAd, 'UpdateAdImage', e.data);
 				console.log(selectedAd, e.data)
 				adObj[selectedAd.toLowerCase()] = e.data
