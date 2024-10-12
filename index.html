@@ -118,6 +118,7 @@
 			}
 			var selectedAd = ""
 			async function handleEvent(e) {
+				console.log(selectedAd, e.data)
 				if (!"https://aptos-project-nku7.vercel.app/".includes(e.origin)) { return }
 				unityInstance.SendMessage(selectedAd, 'UpdateAdImage', e.data);
 				console.log(selectedAd, e.data)
@@ -154,7 +155,7 @@
 
 		var script = document.createElement("script");
 		script.src = loaderUrl;
-		
+
 		script.onload = () => {
 			createUnityInstance(canvas, config, (progress) => {
 				progressBarFull.style.width = 100 * progress + "%";
