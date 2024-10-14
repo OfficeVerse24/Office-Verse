@@ -83,7 +83,7 @@
 		var buildUrl = "Build";
 		var loaderUrl = buildUrl + "/Office-Verse.loader.js";
 		var config = {
-			dataUrl: buildUrl + "/5afb1ada73616a58b12e27b859af63b4.data",
+			dataUrl: buildUrl + "/fc4d1dfaa19eacd8bab689002c1c01a7.data",
 			frameworkUrl: buildUrl + "/49463d6759c44cea6bcf5a6d6a4de5b8.js",
 			codeUrl: buildUrl + "/a6bf3c2a52108e74d78ca78dcc91f4c0.wasm",
         streamingAssetsUrl: "StreamingAssets",
@@ -111,58 +111,14 @@
 		}
 		loadingBar.style.display = "block";
 
-		var adObj = {
-				ad1: "",
-				ad2: "",
-				ad3: ""
-			}
-			var selectedAd = ""
-			async function handleEvent(e) {
-				if (!"https://aptos-project-nku7.vercel.app/".includes(e.origin)) { return }
-				unityInstance.SendMessage(selectedAd, 'UpdateAdImage', e.data);
-				console.log(selectedAd, e.data)
-				adObj[selectedAd.toLowerCase()] = e.data
-				const response = await fetch("https://connectverse-service.vercel.app", {
-					method: "POST",
-					body: JSON.stringify(adObj)
-				})
-			}
-
-			function handleModalChange(adName) {
-				selectedAd = adName
-			}
-
-			async function getAdImage() {
-				const response = await fetch("https://connectverse-service.vercel.app")
-				if (!response.ok) {
-					console.error("Network error saving ad Image")
-				}
-
-				return await response.json()
-			}
-
-			function OnMapLoaded() {
-				getAdImage().then(data => {
-					adObj = data
-
-					unityInstance.SendMessage("AD1", 'UpdateAdImage', data.ad1);
-					unityInstance.SendMessage("AD2", 'UpdateAdImage', data.ad2);
-					unityInstance.SendMessage("AD3", 'UpdateAdImage', data.ad3);
-
-				})
-			}
-
 		var script = document.createElement("script");
 		script.src = loaderUrl;
-
 		script.onload = () => {
-			window.addEventListener("message", handleEvent, false);
 			createUnityInstance(canvas, config, (progress) => {
 				progressBarFull.style.width = 100 * progress + "%";
 			}).then((unityInstance2) => {
 				unityInstance = unityInstance2;
 				loadingBar.style.display = "none";
-				
 			}).catch((message) => {
 				alert(message);
 			});
