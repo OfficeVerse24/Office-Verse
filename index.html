@@ -83,9 +83,9 @@
 		var buildUrl = "Build";
 		var loaderUrl = buildUrl + "/Office-Verse.loader.js";
 		var config = {
-			dataUrl: buildUrl + "/75e67199f3c8f2e885378eaab05b3855.data",
+			dataUrl: buildUrl + "/68f2a62f4c002e451affa9bf2778e616.data",
 			frameworkUrl: buildUrl + "/49463d6759c44cea6bcf5a6d6a4de5b8.js",
-			codeUrl: buildUrl + "/a1755cd1a6e052193bbd0f85bb05770e.wasm",
+			codeUrl: buildUrl + "/7fa2e9d57692b165a49da7d32b8c8af3.wasm",
         streamingAssetsUrl: "StreamingAssets",
 			companyName: "DefaultCompany",
 			productName: "Office Dar Blockchain",
@@ -110,6 +110,7 @@
 			canvas.style.height = "100%";
 		}
 		loadingBar.style.display = "block";
+
 		var adObj = {
 				ad1: "",
 				ad2: "",
@@ -150,6 +151,7 @@
 
 				})
 			}
+
 		var script = document.createElement("script");
 		script.src = loaderUrl;
 		script.onload = () => {
