@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Aptosverse</title>
+	<title>Office Dar Blockchain</title>
 	<link rel="shortcut icon" href="TemplateData/favicon.ico">
 	<link rel="stylesheet" href="AgoraWebSDK/style.css">
 	<link rel="stylesheet" href="TemplateData/style.css">
@@ -81,11 +81,11 @@
 		var angle = 0;
 
 		var buildUrl = "Build";
-		var loaderUrl = buildUrl + "/Build.loader.js";
+		var loaderUrl = buildUrl + "/Office-Verse.loader.js";
 		var config = {
-			dataUrl: buildUrl + "/fc480d7464bf106930145aa90d78e647.data",
-			frameworkUrl: buildUrl + "/a95ad91981f2727dcc57ba7e585f213c.js",
-			codeUrl: buildUrl + "/7d43cbd5a4f1dd1676c48fc400514051.wasm",
+			dataUrl: buildUrl + "/c33d9f351fe9f16740dd4e4fd5141d84.data",
+			frameworkUrl: buildUrl + "/49463d6759c44cea6bcf5a6d6a4de5b8.js",
+			codeUrl: buildUrl + "/7fa2e9d57692b165a49da7d32b8c8af3.wasm",
         streamingAssetsUrl: "StreamingAssets",
 			companyName: "DefaultCompany",
 			productName: "Office Dar Blockchain",
@@ -111,6 +111,7 @@
 		}
 		loadingBar.style.display = "block";
 
+		
 		var adObj = {
 				ad1: "",
 				ad2: "",
@@ -118,7 +119,7 @@
 			}
 			var selectedAd = ""
 			async function handleEvent(e) {
-				if (!"http://localhost:5173".includes(e.origin)) { return }
+				if (!"https://aptos-project-nku7.vercel.app/".includes(e.origin)) { return }
 				unityInstance.SendMessage(selectedAd, 'UpdateAdImage', e.data);
 				console.log(selectedAd, e.data)
 				adObj[selectedAd.toLowerCase()] = e.data
@@ -152,21 +153,19 @@
 				})
 			}
 
-			var script = document.createElement("script");
-			script.src = loaderUrl;
-
-			script.onload = () => {
-				window.addEventListener("message", handleEvent, false);
-				createUnityInstance(canvas, config, (progress) => {
-					progressBarFull.style.width = 100 * progress + "%";
-				}).then((unityInstance2) => {
-					unityInstance = unityInstance2;
-					loadingBar.style.display = "none";
-
-				}).catch((message) => {
-					alert(message);
-				});
-			};
+		var script = document.createElement("script");
+		script.src = loaderUrl;
+		script.onload = () => {
+			window.addEventListener("message", handleEvent, false);
+			createUnityInstance(canvas, config, (progress) => {
+				progressBarFull.style.width = 100 * progress + "%";
+			}).then((unityInstance2) => {
+				unityInstance = unityInstance2;
+				loadingBar.style.display = "none";
+			}).catch((message) => {
+				alert(message);
+			});
+		};
 		document.body.appendChild(script);
 	</script>
 </body>
