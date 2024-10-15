@@ -117,7 +117,7 @@
 			}
 			var selectedAd = ""
 			async function handleEvent(e) {
-				if (!"https://localhost:5173".includes(e.origin)) { return }
+				if (!"http://localhost:5173/".includes(e.origin)) { return }
 				unityInstance.SendMessage(selectedAd, 'UpdateAdImage', e.data);
 				console.log(selectedAd, e.data)
 				adObj[selectedAd.toLowerCase()] = e.data
